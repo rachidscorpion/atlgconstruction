@@ -1,0 +1,224 @@
+/* Gallery Section */
+.gallery-section {
+    padding: 6rem 3rem;
+    background: #050505;
+}
+
+.gallery-section h2 {
+    font-size: 1rem;
+    margin-bottom: 3rem;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--foreground);
+    text-align: center;
+}
+
+.gallery-viewport {
+    overflow: hidden;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    /* To position nav buttons */
+    padding: 0 40px;
+    /* Make space for arrows */
+}
+
+.gallery-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.gallery-page {
+    box-sizing: border-box;
+    display: grid;
+    /* Change to 3 columns, 1 row for "3 images at a time" */
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    gap: 1.5rem;
+    padding: 0 0.5rem;
+}
+
+.gallery-item {
+    position: relative;
+    aspect-ratio: 4/3;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 4px;
+    background-color: #1a1a1a;
+}
+
+.gallery-image {
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.gallery-item:hover .gallery-image {
+    transform: scale(1.05);
+}
+
+/* Navigation Arrows */
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.3s;
+}
+
+.gallery-nav:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.gallery-nav.disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.gallery-nav.prev {
+    left: 0;
+}
+
+.gallery-nav.next {
+    right: 0;
+}
+
+.gallery-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+.pagination-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #333;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    padding: 0;
+}
+
+.pagination-dot:hover {
+    background: #555;
+}
+
+.pagination-dot.active {
+    background: var(--primary);
+    transform: scale(1.2);
+}
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.lightbox-content {
+    position: relative;
+    width: 90%;
+    height: 90%;
+    max-width: 1200px;
+    max-height: 90vh;
+}
+
+.lightbox-image {
+    object-fit: contain;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 2.5rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.lightbox-close:hover {
+    color: var(--accent);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive Gallery */
+@media (max-width: 1024px) {
+    .gallery-page {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-section {
+        padding: 4rem 1rem;
+    }
+
+    .gallery-viewport {
+        padding: 0;
+        /* Remove padding for arrows on mobile if used completely via swipe, or keep small padding */
+    }
+
+    .gallery-nav {
+        display: none;
+        /* Hide arrows on mobile, rely on swipe */
+    }
+
+    .gallery-page {
+        /* On mobile, can still keep 3 in a row or switch to 1 or 2. 
+           User asked "View 3 images at a time", which usually implies on the main view. 
+           If 3 columns is too small on mobile, we might need to stack them. 
+           But let's stick to the rule "3 images at a time" as primary goal. 
+           However, 3 columns on a phone is very tight. 
+           Let's do 1 column on very small screens, 2 on tablets, but the "pages" logic makes that tricky 
+           because React component is chunking by 3. 
+           
+           COMPROMISE: Keep the chunking by 3, but on mobile allow them to wrap or stack?
+           Currently `.gallery-page` is a grid. 
+           If I change grid-template-columns to 1fr, the 3 images will stack vertically in one "slide".
+           This fulfills "3 images at a time" (just vertically).
+        */
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, auto);
+        gap: 1rem;
+    }
+
+    .gallery-item {
+        aspect-ratio: 16/9;
+        /* Wider on mobile for better view */
+    }
+}

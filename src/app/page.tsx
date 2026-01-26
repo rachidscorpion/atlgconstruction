@@ -1,5 +1,9 @@
 import Image from "next/image";
 
+import fs from "fs";
+import path from "path";
+import Gallery from "@/components/Gallery";
+
 export default function Home() {
   const services = [
     { name: "New building projects", image: "/services-images/framing.jpg" }, // Using framing as placeholder if specific one missing
@@ -13,9 +17,21 @@ export default function Home() {
     { name: "Flooring", image: "/services-images/flooring.jpg" },
     { name: "Additions", image: "/services-images/additions.jpg" },
     { name: "Basement finishing", image: "/services-images/basement-finishing.jpg" },
-    { name: "Kitchen renovations", image: "/services-images/kitechen-renovation.jpg" },
+    { name: "Kitchen renovations", image: "/services-images/kitchen-renovation.jpg" },
     { name: "Bathrooms remodeling", image: "/services-images/bathroom-remodelling.jpg" },
   ];
+
+  // Read gallery images
+  const galleryDir = path.join(process.cwd(), "public", "gallery");
+  let galleryImages: string[] = [];
+  try {
+    const files = fs.readdirSync(galleryDir);
+    galleryImages = files
+      .filter((file) => /\.(jpg|jpeg|png)$/i.test(file))
+      .map((file) => `/gallery/${file}`);
+  } catch (error) {
+    console.error("Error reading gallery images:", error);
+  }
 
   return (
     <main>
@@ -92,6 +108,8 @@ export default function Home() {
         </div>
       </section>
 
+      <Gallery images={galleryImages} />
+
       <section id="contact" className="contact-section">
         <div className="container contact-container">
           <div className="contact-info">
@@ -129,3 +147,4 @@ export default function Home() {
     </main>
   );
 }
+
