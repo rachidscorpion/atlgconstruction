@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { motion } from "framer-motion";
 import { sendEmail } from "@/actions/contact";
 
@@ -29,6 +29,10 @@ import { useFormStatus } from "react-dom";
 
 export default function Contact() {
     const [state, formAction] = useActionState(sendEmail, initialState);
+    const [name, setName] = useState("Jose");
+    const [email, setEmail] = useState("altconstructions09@gmail.com");
+    const [phone, setPhone] = useState("(470) 290-7170");
+    const [address, setAddress] = useState("Atlanta, GA");
 
     return (
         <section id="contact" className="contact-section">
@@ -43,9 +47,9 @@ export default function Contact() {
                     <h2>Contact Us</h2>
                     <p>Ready to start your project? Get in touch with us today.</p>
                     <div className="info-details">
-                        <p><strong>Email:</strong> atlgreatconstructionandrenovat@gmail.com</p>
-                        <p><strong>Phone:</strong> (470) 290-7170 (Jose - Business Owner)</p>
-                        <p><strong>Address:</strong> Atlanta, GA</p>
+                        <p><strong>Email:</strong> <a href={`mailto:${email}`}>{email}</a></p>
+                        <p><strong>Phone:</strong> <a href={`tel:${phone}`}>{phone}</a> ({name} - Business Owner)</p>
+                        <p><strong>Address:</strong> {address}</p>
                     </div>
                 </motion.div>
 
