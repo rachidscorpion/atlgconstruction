@@ -30,7 +30,7 @@ import { useFormStatus } from "react-dom";
 export default function Contact() {
     const [state, formAction] = useActionState(sendEmail, initialState);
     const [name, setName] = useState("Jose");
-    const [email, setEmail] = useState("atlgreatconstructionandrenovat.com");
+    const [email, setEmail] = useState("atlgreatconstructionandrenovat@gmail.com");
     const [phone, setPhone] = useState("(470) 290-7170");
     const [address, setAddress] = useState("Atlanta, GA");
 
